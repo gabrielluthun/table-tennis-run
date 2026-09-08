@@ -1,10 +1,11 @@
 # Dependencies
 node_modules/
+package-lock.json
 
 # Build
 dist/
 
-# Cursor rules — config locale, non versionnée
+# Cursor rules 
 .cursor/rules/
 
 # OS / editor
