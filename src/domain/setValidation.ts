@@ -5,7 +5,13 @@ import {
   MIN_SET_SCORE,
   MIN_WIN_MARGIN,
 } from '@/constants/gameRules'
-import type { SetInput, SetScore, SetWinner, ValidationResult } from '@/domain/types'
+import type {
+  MatchCompletion,
+  SetInput,
+  SetScore,
+  SetWinner,
+  ValidationResult,
+} from '@/domain/types'
 
 export function getSetWinner(user: number, adversaire: number): SetWinner {
   if (!isValidSetScore(user, adversaire)) return null
@@ -23,21 +29,25 @@ export function isValidSetScore(user: number, adversaire: number): boolean {
   return diff === MIN_WIN_MARGIN
 }
 
-function countSetWins(sets: SetScore[]) {
-  return sets.reduce(
-    (acc, set) => {
-      const winner = getSetWinner(set.user, set.adversaire)
-      if (winner === 'user') acc.user += 1
-      if (winner === 'adversaire') acc.adversaire += 1
-      return acc
-    },
-    { user: 0, adversaire: 0 },
-  )
+export function getMatchCompletion(sets: SetScore[]): MatchCompletion {
+  let user = 0
+  let adversaire = 0
+
+  for (const [index, set] of sets.entries()) {
+    const winner = getSetWinner(set.user, set.adversaire)
+    if (winner === 'user') user += 1
+    if (winner === 'adversaire') adversaire += 1
+
+    if (user === BO5_WIN_SETS || adversaire === BO5_WIN_SETS) {
+      return index === sets.length - 1 ? 'complete' : 'extra-sets'
+    }
+  }
+
+  return 'unfinished'
 }
 
 export function isMatchComplete(sets: SetScore[]): boolean {
-  const wins = countSetWins(sets)
-  return wins.user === BO5_WIN_SETS || wins.adversaire === BO5_WIN_SETS
+  return getMatchCompletion(sets) === 'complete'
 }
 
 function filledSets(sets: SetInput[]): SetInput[] {
@@ -77,8 +87,11 @@ export function validateMatch(sets: SetInput[]): ValidationResult {
 
   if (errors.length) return { valid: false, errors, sets: parsed }
 
-  if (!isMatchComplete(parsed)) {
-    errors.push('Match BO5 incomplet : un joueur doit gagner 3 sets.')
+  const completion = getMatchCompletion(parsed)
+  if (completion === 'unfinished') {
+    errors.push(`Match BO5 incomplet : un joueur doit gagner ${BO5_WIN_SETS} sets.`)
+  } else if (completion === 'extra-sets') {
+    errors.push(`Sets en trop : le match s'arrête dès qu'un joueur gagne ${BO5_WIN_SETS} sets.`)
   }
 
   return { valid: errors.length === 0, errors, sets: parsed }
