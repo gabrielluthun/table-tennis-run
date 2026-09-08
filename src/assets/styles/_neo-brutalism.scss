@@ -1,0 +1,39 @@
+@use 'variables' as *;
+
+@mixin neo-card($bg: $bg-white) {
+  background: $bg;
+  border: $border-thick;
+  box-shadow: $shadow-hard;
+}
+
+@mixin neo-button($bg: $bg-acid-green) {
+  @include neo-card($bg);
+  font-family: $font-title;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+
+  &:hover,
+  &:active {
+    transform: translate(4px, 4px);
+    box-shadow: $shadow-press;
+  }
+}
+
+@mixin neo-input {
+  border: $border-thick;
+  font-family: $font-score;
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  text-align: center;
+  width: 4rem;
+  background: $bg-white;
+
+  &:focus {
+    outline: 3px solid $bg-cyan;
+    outline-offset: 2px;
+  }
+}
