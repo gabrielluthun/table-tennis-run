@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# Cursor rules — config locale, non versionnée
+.cursor/rules/
+
+# OS / editor
+.DS_Store
+*.local
