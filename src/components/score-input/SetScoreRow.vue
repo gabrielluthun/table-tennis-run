@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { getSetWinner, isValidSetScore } from '@/domain/setValidation'
 import type { SetInput } from '@/domain/types'
+import './SetScoreRow.scss'
 
-defineProps<{
+const props = defineProps<{
   index: number
   modelValue: SetInput
 }>()
@@ -9,11 +12,31 @@ defineProps<{
 defineEmits<{
   'update:modelValue': [value: SetInput]
 }>()
+
+const scores = computed(() => {
+  const { user, adversaire } = props.modelValue
+  if (user === '' || adversaire === '') return null
+  const parsed = { user: Number(user), adversaire: Number(adversaire) }
+  return Number.isNaN(parsed.user) || Number.isNaN(parsed.adversaire) ? null : parsed
+})
+
+const status = computed(() => {
+  if (!scores.value) return 'empty'
+  return isValidSetScore(scores.value.user, scores.value.adversaire) ? 'valid' : 'invalid'
+})
+
+const statusLabel = computed(() => {
+  if (!scores.value || status.value === 'invalid') return '✗'
+  return getSetWinner(scores.value.user, scores.value.adversaire) === 'user' ? '✓ TOI' : '✓ ADV'
+})
 </script>
 
 <template>
-  <div class="set-row">
-    <span class="set-row__label">SET {{ index }}</span>
+  <div class="set-row" :class="`set-row--${status}`">
+    <div class="set-row__head">
+      <span class="set-row__label">SET {{ index }}</span>
+      <span v-if="status !== 'empty'" class="set-row__status">{{ statusLabel }}</span>
+    </div>
     <div class="set-row__inputs">
       <label>
         <span class="sr-only">Toi set {{ index }}</span>
@@ -55,53 +78,3 @@ defineEmits<{
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-@use '@/assets/styles/variables' as *;
-@use '@/assets/styles/neo-brutalism' as *;
-
-.set-row {
-  @include neo-card($bg-cyan);
-  display: grid;
-  gap: 0.5rem;
-  padding: 1rem;
-
-  &__label {
-    font-size: 0.9rem;
-  }
-
-  &__inputs {
-    align-items: center;
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-  }
-
-  &__sep {
-    font-family: $font-score;
-    font-size: 0.65rem;
-  }
-
-  input {
-    @include neo-input;
-  }
-
-  &__players {
-    display: flex;
-    font-size: 0.65rem;
-    justify-content: space-around;
-    opacity: 0.7;
-  }
-}
-
-.sr-only {
-  border: 0;
-  clip: rect(0, 0, 0, 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-}
-</style>
