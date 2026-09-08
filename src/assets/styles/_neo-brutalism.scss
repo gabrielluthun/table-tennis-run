@@ -16,6 +16,11 @@
     transform 0.1s,
     box-shadow 0.1s;
 
+  &:focus-visible {
+    outline: 3px solid $bg-black;
+    outline-offset: 3px;
+  }
+
   &:hover,
   &:active {
     transform: translate(4px, 4px);
