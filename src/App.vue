@@ -17,6 +17,7 @@ const {
   formErrors,
   submitMatch,
   resetToInput,
+  deleteMatch,
   clearHistory,
 } = usePingPongTracker()
 
@@ -51,6 +52,11 @@ function handleCloseReveal(): void {
       />
     </main>
 
-    <HistoryBoard :matches="matches" :total-km="totalKm" @clear="clearHistory" />
+    <HistoryBoard
+      :matches="matches"
+      :total-km="totalKm"
+      @clear="clearHistory"
+      @remove="deleteMatch"
+    />
   </div>
 </template>
