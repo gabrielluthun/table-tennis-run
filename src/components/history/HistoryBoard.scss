@@ -1,0 +1,36 @@
+@use '@/assets/styles/variables' as *;
+@use '@/assets/styles/neo-brutalism' as *;
+
+.history-board {
+  @include neo-card($bg-white);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+
+  &__title {
+    font-size: 1rem;
+  }
+
+  &__empty {
+    font-family: $font-score;
+    font-size: 0.55rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    list-style: none;
+    max-height: 24rem;
+    overflow-y: auto;
+  }
+
+  &__clear {
+    @include neo-button($bg-fluo-pink);
+    font-size: 0.65rem;
+    padding: 0.4rem 0.75rem;
+  }
+}
