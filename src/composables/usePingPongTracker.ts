@@ -35,8 +35,7 @@ export function usePingPongTracker(storage: StorageService = matchStorage) {
       ...analysis,
     }
 
-    matches.value = [match, ...matches.value]
-    storage.save({ matches: matches.value })
+    persist([match, ...matches.value])
     lastResult.value = match
     formErrors.value = []
     currentStep.value = 'reveal'
@@ -47,6 +46,16 @@ export function usePingPongTracker(storage: StorageService = matchStorage) {
     currentStep.value = 'input'
     lastResult.value = null
     formErrors.value = []
+  }
+
+  function persist(next: MatchRecord[]): void {
+    matches.value = next
+    storage.save({ matches: next })
+  }
+
+  function deleteMatch(id: string): void {
+    persist(matches.value.filter((match) => match.id !== id))
+    if (lastResult.value?.id === id) resetToInput()
   }
 
   function clearHistory(): void {
@@ -63,6 +72,7 @@ export function usePingPongTracker(storage: StorageService = matchStorage) {
     formErrors,
     submitMatch,
     resetToInput,
+    deleteMatch,
     clearHistory,
   }
 }
