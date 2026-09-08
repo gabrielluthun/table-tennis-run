@@ -46,3 +46,17 @@ input[type='number'] {
     margin: 0;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  button:hover,
+  button:active {
+    transform: none !important;
+  }
+}

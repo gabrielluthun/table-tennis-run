@@ -14,7 +14,7 @@ defineProps<{
 @use '@/assets/styles/variables' as *;
 
 .special-badge {
-  animation: blink-border 0.8s step-end infinite, badge-slide 0.4s ease-out;
+  animation: blink-border 0.8s step-end 6, badge-slide 0.4s ease-out;
   background: $bg-white;
   border: $border-thick;
   display: inline-block;

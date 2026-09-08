@@ -25,8 +25,16 @@ let badgeTimer: ReturnType<typeof setInterval> | undefined
 const sequenceLabel = computed(() => props.result.sequence.join(' / '))
 const outcomeLabel = computed(() => (props.result.outcome === 'win' ? 'VICTOIRE' : 'DÉFAITE'))
 
+function prefersReducedMotion(): boolean {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown)
+  if (prefersReducedMotion()) {
+    reveal()
+    return
+  }
   calcTimer = setTimeout(reveal, CALC_DURATION_MS)
 })
 
@@ -49,6 +57,10 @@ function reveal(): void {
 function revealBadges(): void {
   const total = props.result.badges.length
   if (total === 0) return
+  if (prefersReducedMotion()) {
+    visibleBadges.value = total
+    return
+  }
 
   badgeTimer = setInterval(() => {
     visibleBadges.value += 1
