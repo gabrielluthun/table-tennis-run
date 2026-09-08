@@ -10,6 +10,7 @@ import './HistoryBoard.scss'
 const props = defineProps<{
   matches: MatchRecord[]
   totalKm: number
+  confirmMatchDelete?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -18,15 +19,28 @@ const emit = defineEmits<{
 }>()
 
 const pendingClear = ref(false)
+const pendingRemoveId = ref<string | null>(null)
 
 watch(
   () => props.matches.length,
   () => {
     pendingClear.value = false
+    pendingRemoveId.value = null
   },
 )
 
 const stats = computed(() => summarizeMatches(props.matches))
+
+function requestRemove(id: string): void {
+  if (props.confirmMatchDelete) pendingRemoveId.value = id
+  else emit('remove', id)
+}
+
+function confirmRemove(): void {
+  if (!pendingRemoveId.value) return
+  emit('remove', pendingRemoveId.value)
+  pendingRemoveId.value = null
+}
 
 function confirmClear(): void {
   pendingClear.value = false
@@ -45,12 +59,23 @@ function confirmClear(): void {
 
     <ul v-else class="history-board__list">
       <li v-for="match in matches" :key="match.id">
-        <MatchCard :match="match" @remove="emit('remove', $event)" />
+        <MatchCard :match="match" @remove="requestRemove" />
       </li>
     </ul>
 
+    <div
+      v-if="pendingRemoveId"
+      class="history-board__confirm"
+      role="group"
+      aria-label="Confirmer la suppression"
+    >
+      <p class="history-board__warn">IRRÉVERSIBLE — CE MATCH</p>
+      <button type="button" class="history-board__clear" @click="confirmRemove">OUI, SUPPRIMER</button>
+      <button type="button" class="history-board__cancel" @click="pendingRemoveId = null">ANNULER</button>
+    </div>
+
     <button
-      v-if="matches.length && !pendingClear"
+      v-if="matches.length && !pendingClear && !pendingRemoveId"
       type="button"
       class="history-board__clear"
       @click="pendingClear = true"
