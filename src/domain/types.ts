@@ -66,3 +66,11 @@ export interface StorageData {
   matches: MatchRecord[]
   totalKm: number
 }
+
+export interface MatchStats {
+  played: number
+  wins: number
+  losses: number
+  averageKm: number
+  worstKm: number
+}
