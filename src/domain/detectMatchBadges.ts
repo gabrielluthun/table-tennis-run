@@ -1,7 +1,17 @@
-import { BUBBLE_THRESHOLD, DEUCE_TOTAL_THRESHOLD } from '@/constants/gameRules'
+import type { GameRules } from '@/domain/settings'
 import type { Badge, DistanceResult, SetScore } from '@/domain/types'
 
-export function detectMatchBadges(sets: SetScore[], meta: DistanceResult): Badge[] {
+function earlySetsAre(sequence: ('W' | 'L')[], winSets: number, value: 'W' | 'L'): boolean {
+  const needed = Math.max(winSets - 1, 1)
+  if (sequence.length < needed) return false
+  return sequence.slice(0, needed).every((set) => set === value)
+}
+
+export function detectMatchBadges(
+  sets: SetScore[],
+  meta: DistanceResult,
+  rules: GameRules,
+): Badge[] {
   const badges: Badge[] = []
   const { sequence, setsGagnes, setsPerdus } = meta
 
@@ -10,7 +20,7 @@ export function detectMatchBadges(sets: SetScore[], meta: DistanceResult): Badge
     const setNum = index + 1
     const totalPoints = set.user + set.adversaire
 
-    if (diff < 0 && set.adversaire < BUBBLE_THRESHOLD) {
+    if (diff < 0 && set.adversaire < rules.bubbleThreshold) {
       badges.push({
         id: `bulle-infligee-${setNum}`,
         label: `BULLE INFLIGÉE (Set ${setNum})`,
@@ -18,7 +28,7 @@ export function detectMatchBadges(sets: SetScore[], meta: DistanceResult): Badge
       })
     }
 
-    if (diff > 0 && set.user < BUBBLE_THRESHOLD) {
+    if (diff > 0 && set.user < rules.bubbleThreshold) {
       badges.push({
         id: `bulle-subie-${setNum}`,
         label: `BULLE SUBIE (Set ${setNum})`,
@@ -26,7 +36,7 @@ export function detectMatchBadges(sets: SetScore[], meta: DistanceResult): Badge
       })
     }
 
-    if (totalPoints > DEUCE_TOTAL_THRESHOLD) {
+    if (totalPoints > rules.deuceTotalThreshold) {
       badges.push({
         id: `deuce-${setNum}`,
         label: `PROLONGATION DEUCE (Set ${setNum})`,
@@ -35,16 +45,16 @@ export function detectMatchBadges(sets: SetScore[], meta: DistanceResult): Badge
     }
   })
 
-  if (setsPerdus === 3) {
-    if (sequence[0] === 'W' && sequence[1] === 'W') {
+  if (setsPerdus === rules.winSets) {
+    if (earlySetsAre(sequence, rules.winSets, 'W')) {
       badges.push({ id: 'choke', label: '💀 CHOKE (×1.5)', type: 'choke' })
     } else {
       badges.push({ id: 'sweep-subi', label: 'SWEEP SUBI (×1.3)', type: 'sweep-subi' })
     }
   }
 
-  if (setsGagnes === 3) {
-    if (sequence[0] === 'L' && sequence[1] === 'L') {
+  if (setsGagnes === rules.winSets) {
+    if (earlySetsAre(sequence, rules.winSets, 'L')) {
       badges.push({ id: 'remontada', label: '🔥 REMONTADA (×0.5)', type: 'remontada' })
     } else {
       badges.push({ id: 'domination', label: 'DOMINATION (×0.7)', type: 'domination' })
