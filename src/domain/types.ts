@@ -45,3 +45,18 @@ export interface ValidationResult {
 }
 
 export type SetWinner = 'user' | 'adversaire' | null
+
+export interface MatchRecord {
+  id: string
+  date: string
+  sets: SetScore[]
+  distance: number
+  sequence: ('W' | 'L')[]
+  multiplier: number
+  badges: Badge[]
+}
+
+export interface StorageData {
+  matches: MatchRecord[]
+  totalKm: number
+}
