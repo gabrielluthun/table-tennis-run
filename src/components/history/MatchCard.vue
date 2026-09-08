@@ -6,6 +6,10 @@ const props = defineProps<{
   match: MatchRecord
 }>()
 
+const emit = defineEmits<{
+  remove: [id: string]
+}>()
+
 const formattedDate = computed(() =>
   new Date(props.match.date).toLocaleDateString('fr-FR', {
     day: '2-digit',
@@ -24,7 +28,17 @@ const scoreLine = computed(() =>
   <article class="match-card">
     <div class="match-card__top">
       <time :datetime="match.date">{{ formattedDate }}</time>
-      <span class="match-card__km">{{ match.distance }} km</span>
+      <div class="match-card__actions">
+        <span class="match-card__km">{{ match.distance }} km</span>
+        <button
+          type="button"
+          class="match-card__remove"
+          :aria-label="`Supprimer le match du ${formattedDate}`"
+          @click="emit('remove', match.id)"
+        >
+          ×
+        </button>
+      </div>
     </div>
     <p class="match-card__score">{{ scoreLine }}</p>
     <p class="match-card__sequence">{{ match.sequence.join(' ') }}</p>
@@ -61,6 +75,20 @@ const scoreLine = computed(() =>
     font-family: $font-score;
     font-size: 0.55rem;
     padding: 0.25rem 0.5rem;
+  }
+
+  &__actions {
+    align-items: center;
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  &__remove {
+    @include neo-button($color-error);
+    color: $bg-white;
+    font-size: 0.9rem;
+    line-height: 1;
+    padding: 0.15rem 0.45rem;
   }
 
   &__score {

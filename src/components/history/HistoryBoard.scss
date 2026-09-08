@@ -33,4 +33,21 @@
     font-size: 0.65rem;
     padding: 0.4rem 0.75rem;
   }
+
+  &__cancel {
+    @include neo-button($bg-white);
+    font-size: 0.65rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  &__confirm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__warn {
+    font-size: 0.7rem;
+    text-align: center;
+  }
 }
