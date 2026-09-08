@@ -15,6 +15,7 @@ defineProps<{
 
 .special-badge {
   animation: blink-border 0.8s step-end infinite, badge-slide 0.4s ease-out;
+  background: $bg-white;
   border: $border-thick;
   display: inline-block;
   font-family: $font-score;
