@@ -27,7 +27,7 @@ npm run preview
 
 1. Joue ton match BO5 hors app
 2. Saisis les scores post-match (3 à 5 sets)
-3. Clique **CALCULER MA PEINE** → distance km révélée
+3. Clique **DÉFINIR MON PROCHAIN RUN** → distance km révélée
 4. L'historique cumule tes km de peine
 
 ## Règles métier
