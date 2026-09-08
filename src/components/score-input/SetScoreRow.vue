@@ -18,7 +18,6 @@ defineEmits<{
       <label>
         <span class="sr-only">Toi set {{ index }}</span>
         <input
-          :id="`set-${index}-user`"
           type="number"
           inputmode="numeric"
           min="0"
@@ -36,7 +35,6 @@ defineEmits<{
       <label>
         <span class="sr-only">Adversaire set {{ index }}</span>
         <input
-          :id="`set-${index}-adv`"
           type="number"
           inputmode="numeric"
           min="0"

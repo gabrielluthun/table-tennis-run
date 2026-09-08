@@ -33,6 +33,12 @@
     padding: 0.5rem 1rem;
   }
 
+  &__remove {
+    @include neo-button($bg-white);
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+  }
+
   &__submit {
     @include neo-button($bg-acid-green);
     font-size: 1rem;
@@ -41,7 +47,7 @@
   }
 
   &__errors {
-    @include neo-card(#ff4444);
+    @include neo-card($color-error);
     color: $bg-white;
     font-size: 0.75rem;
     list-style: none;
