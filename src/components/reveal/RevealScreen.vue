@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, nextTick } from 'vue'
 import type { MatchRecord } from '@/domain/types'
+import { playArcadeHit } from '@/services/arcadeSound'
 import SpecialBadge from './SpecialBadge.vue'
 import './RevealScreen.scss'
 
@@ -9,6 +10,7 @@ const BADGE_INTERVAL_MS = 400
 
 const props = defineProps<{
   result: MatchRecord
+  soundEnabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -50,6 +52,7 @@ function handleKeydown(event: KeyboardEvent): void {
 
 function reveal(): void {
   phase.value = 'reveal'
+  if (props.soundEnabled) playArcadeHit()
   nextTick(() => closeRef.value?.focus())
   revealBadges()
 }
