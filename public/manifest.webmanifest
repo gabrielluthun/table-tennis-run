@@ -1,15 +1,15 @@
 {
   "name": "Table Tennis Run",
   "short_name": "TT Run",
-  "description": "Tracker tes matchs de ping-pong BO5 et transformer le score en kilomètres à courir.",
-  "start_url": "/",
+  "description": "Tracker tes matchs de ping-pong et transformer le score en kilomètres à courir.",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#ffd600",
   "theme_color": "#ffd600",
   "lang": "fr",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
