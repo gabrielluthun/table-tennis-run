@@ -1,4 +1,5 @@
 @use '@/assets/styles/variables' as *;
+@use '@/assets/styles/neo-brutalism' as *;
 
 .app {
   display: grid;
@@ -15,8 +16,28 @@
   }
 
   &__header {
+    display: grid;
+    gap: 0.75rem;
     grid-column: 1 / -1;
+    position: relative;
     text-align: center;
+  }
+
+  &__options {
+    @include neo-button($bg-cyan);
+    font-size: 0.7rem;
+    justify-self: end;
+    padding: 0.4rem 0.8rem;
+  }
+
+  &__help {
+    @include neo-button($bg-mustard);
+    bottom: 1.25rem;
+    font-size: 0.6rem;
+    padding: 0.55rem 0.85rem;
+    position: fixed;
+    right: 1.25rem;
+    z-index: 50;
   }
 
   &__title {
