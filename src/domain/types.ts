@@ -51,6 +51,10 @@ export type SetWinner = 'user' | 'adversaire' | null
 
 export type MatchCompletion = 'complete' | 'unfinished' | 'extra-sets'
 
+export type MatchFormat = 'BO3' | 'BO5'
+
+export type SetTarget = 11 | 21
+
 export interface MatchRecord {
   id: string
   date: string
