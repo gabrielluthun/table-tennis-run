@@ -30,10 +30,13 @@ export interface DistanceResult {
   setDetails: SetDetail[]
 }
 
+export type MatchOutcome = 'win' | 'loss'
+
 export interface MatchAnalysis {
   distance: number
   sequence: ('W' | 'L')[]
   multiplier: number
+  outcome: MatchOutcome
   badges: Badge[]
   setDetails: SetDetail[]
 }
@@ -55,6 +58,7 @@ export interface MatchRecord {
   distance: number
   sequence: ('W' | 'L')[]
   multiplier: number
+  outcome: MatchOutcome
   badges: Badge[]
 }
 
