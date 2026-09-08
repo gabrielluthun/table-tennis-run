@@ -1,0 +1,47 @@
+export interface SetScore {
+  user: number
+  adversaire: number
+}
+
+export interface SetInput {
+  user: string | number
+  adversaire: string | number
+}
+
+export interface Badge {
+  id: string
+  label: string
+  type: string
+}
+
+export interface SetDetail {
+  index: number
+  setDistance: number
+  pressionJeu: number
+}
+
+export interface DistanceResult {
+  distance: number
+  sequence: ('W' | 'L')[]
+  multiplier: number
+  rawTotal: number
+  setsGagnes: number
+  setsPerdus: number
+  setDetails: SetDetail[]
+}
+
+export interface MatchAnalysis {
+  distance: number
+  sequence: ('W' | 'L')[]
+  multiplier: number
+  badges: Badge[]
+  setDetails: SetDetail[]
+}
+
+export interface ValidationResult {
+  valid: boolean
+  errors: string[]
+  sets: SetScore[]
+}
+
+export type SetWinner = 'user' | 'adversaire' | null
