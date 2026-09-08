@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { analyzeMatch } from '@/domain/analyzeMatch'
 import { validateMatch } from '@/domain/setValidation'
+import type { GameRules } from '@/domain/settings'
 import type { MatchRecord, SetInput } from '@/domain/types'
 import { generateMatchId } from '@/services/idGenerator'
 import { matchStorage } from '@/services/matchStorage'
@@ -20,14 +21,14 @@ export function usePingPongTracker(storage: StorageService = matchStorage) {
     Math.round(matches.value.reduce((sum, m) => sum + m.distance, 0) * 10) / 10,
   )
 
-  function submitMatch(sets: SetInput[]): boolean {
-    const validation = validateMatch(sets)
+  function submitMatch(sets: SetInput[], rules: GameRules): boolean {
+    const validation = validateMatch(sets, rules)
     if (!validation.valid) {
       formErrors.value = validation.errors
       return false
     }
 
-    const analysis = analyzeMatch(validation.sets)
+    const analysis = analyzeMatch(validation.sets, rules)
     const match: MatchRecord = {
       id: generateMatchId(),
       date: new Date().toISOString(),
@@ -58,6 +59,11 @@ export function usePingPongTracker(storage: StorageService = matchStorage) {
     if (lastResult.value?.id === id) resetToInput()
   }
 
+  function replaceMatches(next: MatchRecord[]): void {
+    persist(next)
+    resetToInput()
+  }
+
   function clearHistory(): void {
     storage.clear()
     matches.value = []
@@ -73,6 +79,7 @@ export function usePingPongTracker(storage: StorageService = matchStorage) {
     submitMatch,
     resetToInput,
     deleteMatch,
+    replaceMatches,
     clearHistory,
   }
 }
