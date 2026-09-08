@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import { analyzeMatch } from '@/domain/analyzeMatch'
 import { validateMatch } from '@/domain/setValidation'
 import type { MatchRecord, SetInput } from '@/domain/types'
+import { generateMatchId } from '@/services/idGenerator'
 import { matchStorage } from '@/services/matchStorage'
 
 export type AppStep = 'input' | 'reveal'
@@ -28,7 +29,7 @@ export function usePingPongTracker(storage: StorageService = matchStorage) {
 
     const analysis = analyzeMatch(validation.sets)
     const match: MatchRecord = {
-      id: crypto.randomUUID(),
+      id: generateMatchId(),
       date: new Date().toISOString(),
       sets: validation.sets,
       ...analysis,
