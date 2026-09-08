@@ -7,11 +7,20 @@ import './SetScoreRow.scss'
 const props = defineProps<{
   index: number
   modelValue: SetInput
+  minSetScore: number
+  minWinMargin: number
+  playerName: string
+  opponentName: string
 }>()
 
 defineEmits<{
   'update:modelValue': [value: SetInput]
 }>()
+
+const rules = computed(() => ({
+  minSetScore: props.minSetScore,
+  minWinMargin: props.minWinMargin,
+}))
 
 const scores = computed(() => {
   const { user, adversaire } = props.modelValue
@@ -22,12 +31,14 @@ const scores = computed(() => {
 
 const status = computed(() => {
   if (!scores.value) return 'empty'
-  return isValidSetScore(scores.value.user, scores.value.adversaire) ? 'valid' : 'invalid'
+  return isValidSetScore(scores.value.user, scores.value.adversaire, rules.value) ? 'valid' : 'invalid'
 })
 
 const statusLabel = computed(() => {
   if (!scores.value || status.value === 'invalid') return '✗'
-  return getSetWinner(scores.value.user, scores.value.adversaire) === 'user' ? '✓ TOI' : '✓ ADV'
+  return getSetWinner(scores.value.user, scores.value.adversaire, rules.value) === 'user'
+    ? `✓ ${props.playerName}`
+    : `✓ ${props.opponentName}`
 })
 </script>
 
@@ -39,7 +50,7 @@ const statusLabel = computed(() => {
     </div>
     <div class="set-row__inputs">
       <label>
-        <span class="sr-only">Toi set {{ index }}</span>
+        <span class="sr-only">{{ playerName }} set {{ index }}</span>
         <input
           type="number"
           inputmode="numeric"
@@ -56,7 +67,7 @@ const statusLabel = computed(() => {
       </label>
       <span class="set-row__sep">—</span>
       <label>
-        <span class="sr-only">Adversaire set {{ index }}</span>
+        <span class="sr-only">{{ opponentName }} set {{ index }}</span>
         <input
           type="number"
           inputmode="numeric"
@@ -73,8 +84,8 @@ const statusLabel = computed(() => {
       </label>
     </div>
     <div class="set-row__players">
-      <span>TOI</span>
-      <span>ADV</span>
+      <span>{{ playerName }}</span>
+      <span>{{ opponentName }}</span>
     </div>
   </div>
 </template>
