@@ -3,7 +3,7 @@ import type { Badge, DistanceResult, SetScore } from '@/domain/types'
 
 export function detectMatchBadges(sets: SetScore[], meta: DistanceResult): Badge[] {
   const badges: Badge[] = []
-  const { sequence, multiplier, setsGagnes, setsPerdus } = meta
+  const { sequence, setsGagnes, setsPerdus } = meta
 
   sets.forEach((set, index) => {
     const diff = set.adversaire - set.user
@@ -49,14 +49,6 @@ export function detectMatchBadges(sets: SetScore[], meta: DistanceResult): Badge
     } else {
       badges.push({ id: 'domination', label: 'DOMINATION (×0.7)', type: 'domination' })
     }
-  }
-
-  if (multiplier !== 1) {
-    badges.push({
-      id: 'multiplier',
-      label: `MULTIPLICATEUR ×${multiplier}`,
-      type: 'multiplier',
-    })
   }
 
   return badges
