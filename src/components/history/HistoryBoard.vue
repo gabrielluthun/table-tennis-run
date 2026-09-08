@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { summarizeMatches } from '@/domain/matchStats'
 import type { MatchRecord } from '@/domain/types'
 import KmTotal from './KmTotal.vue'
 import MatchCard from './MatchCard.vue'
+import MatchStats from './MatchStats.vue'
 import './HistoryBoard.scss'
 
 const props = defineProps<{
@@ -24,6 +26,8 @@ watch(
   },
 )
 
+const stats = computed(() => summarizeMatches(props.matches))
+
 function confirmClear(): void {
   pendingClear.value = false
   emit('clear')
@@ -35,6 +39,7 @@ function confirmClear(): void {
     <h2 class="history-board__title">HISTORIQUE</h2>
 
     <KmTotal :total-km="totalKm" />
+    <MatchStats v-if="stats.played" :stats="stats" />
 
     <p v-if="!matches.length" class="history-board__empty">AUCUN MATCH — PREMIER SET !</p>
 
