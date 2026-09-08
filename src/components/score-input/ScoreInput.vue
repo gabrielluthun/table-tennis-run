@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
-import { DEFAULT_VISIBLE_SETS, MAX_SETS } from '@/constants/gameRules'
+import { DEFAULT_VISIBLE_SETS, MAX_SETS, MIN_SETS } from '@/constants/gameRules'
 import type { SetInput } from '@/domain/types'
 import SetScoreRow from './SetScoreRow.vue'
 import './ScoreInput.scss'
@@ -14,17 +14,26 @@ const emit = defineEmits<{
 }>()
 
 const emptySet = (): SetInput => ({ user: '', adversaire: '' })
+const formRef = ref<HTMLFormElement | null>(null)
 const visibleCount = ref(DEFAULT_VISIBLE_SETS)
 const sets = ref<SetInput[]>(Array.from({ length: DEFAULT_VISIBLE_SETS }, emptySet))
 
-onMounted(() => {
-  nextTick(() => document.getElementById('set-1-user')?.focus())
-})
+onMounted(focusFirstInput)
+
+function focusFirstInput(): void {
+  nextTick(() => formRef.value?.querySelector('input')?.focus())
+}
 
 function addSet(): void {
   if (visibleCount.value >= MAX_SETS) return
   visibleCount.value += 1
   sets.value.push(emptySet())
+}
+
+function removeSet(): void {
+  if (visibleCount.value <= MIN_SETS) return
+  visibleCount.value -= 1
+  sets.value.pop()
 }
 
 function handleSubmit(): void {
@@ -34,14 +43,14 @@ function handleSubmit(): void {
 function resetForm(): void {
   visibleCount.value = DEFAULT_VISIBLE_SETS
   sets.value = Array.from({ length: DEFAULT_VISIBLE_SETS }, emptySet)
-  nextTick(() => document.getElementById('set-1-user')?.focus())
+  focusFirstInput()
 }
 
 defineExpose({ resetForm })
 </script>
 
 <template>
-  <section class="score-input">
+  <form ref="formRef" class="score-input" novalidate @submit.prevent="handleSubmit">
     <h2 class="score-input__title">MATCH TERMINÉ ?<br />BALANCE TES SCORES</h2>
 
     <div class="score-input__sets">
@@ -54,9 +63,17 @@ defineExpose({ resetForm })
       />
     </div>
 
-    <div v-if="visibleCount < MAX_SETS" class="score-input__actions">
-      <button type="button" class="score-input__add" @click="addSet">
-        + {{ visibleCount + 1 }}e SET
+    <div class="score-input__actions">
+      <button
+        v-if="visibleCount > MIN_SETS"
+        type="button"
+        class="score-input__remove"
+        @click="removeSet"
+      >
+        − SET {{ visibleCount }}
+      </button>
+      <button v-if="visibleCount < MAX_SETS" type="button" class="score-input__add" @click="addSet">
+        + SET {{ visibleCount + 1 }}
       </button>
     </div>
 
@@ -64,8 +81,6 @@ defineExpose({ resetForm })
       <li v-for="(err, i) in props.errors" :key="i">{{ err }}</li>
     </ul>
 
-    <button type="button" class="score-input__submit" @click="handleSubmit">
-      DÈFINIR MON PROCHAIN RUN
-    </button>
-  </section>
+    <button type="submit" class="score-input__submit">DÉFINIR MON PROCHAIN RUN</button>
+  </form>
 </template>
