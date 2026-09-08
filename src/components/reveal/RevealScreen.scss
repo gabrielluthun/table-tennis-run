@@ -1,0 +1,57 @@
+@use '@/assets/styles/variables' as *;
+@use '@/assets/styles/animations' as *;
+@use '@/assets/styles/neo-brutalism' as *;
+
+.reveal-screen {
+  align-items: center;
+  background: $bg-cyan;
+  border: $border-thick;
+  box-shadow: $shadow-hard;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  inset: 0;
+  justify-content: center;
+  padding: 2rem;
+  position: fixed;
+  z-index: 100;
+
+  &__calc {
+    animation: pulse-text 0.6s ease-in-out infinite;
+    font-family: $font-score;
+    font-size: 0.75rem;
+  }
+
+  &__distance {
+    animation: pop-in 0.6s ease-out forwards;
+    font-family: $font-score;
+    font-size: 2rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  &__unit {
+    display: block;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  &__sequence {
+    font-family: $font-score;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+  }
+
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    max-width: 24rem;
+  }
+
+  &__close {
+    @include neo-button($bg-fluo-pink);
+    margin-top: 1rem;
+  }
+}
