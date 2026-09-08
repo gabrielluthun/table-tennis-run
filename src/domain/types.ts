@@ -46,6 +46,8 @@ export interface ValidationResult {
 
 export type SetWinner = 'user' | 'adversaire' | null
 
+export type MatchCompletion = 'complete' | 'unfinished' | 'extra-sets'
+
 export interface MatchRecord {
   id: string
   date: string
