@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build
+dist/
+
+# Cursor rules 
+.cursor/rules/
+
+# OS / editor
+.DS_Store
+*.local

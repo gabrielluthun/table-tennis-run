@@ -1,0 +1,22 @@
+{
+  "name": "table-tennis-run",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.5.42"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.0",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/tsconfig": "^0.9.1",
+    "sass": "^1.104.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  }
+}
