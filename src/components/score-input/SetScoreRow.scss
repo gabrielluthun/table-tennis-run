@@ -1,0 +1,62 @@
+@use '@/assets/styles/variables' as *;
+@use '@/assets/styles/neo-brutalism' as *;
+
+.set-row {
+  @include neo-card($bg-cyan);
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+
+  &--valid {
+    background: $bg-acid-green;
+  }
+
+  &__head {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__label {
+    font-size: 0.9rem;
+  }
+
+  &__status {
+    border: 2px solid $bg-black;
+    font-size: 0.6rem;
+    padding: 0.15rem 0.4rem;
+
+    .set-row--valid & {
+      background: $bg-black;
+      color: $bg-acid-green;
+    }
+
+    .set-row--invalid & {
+      background: $color-error;
+      color: $bg-white;
+    }
+  }
+
+  &__inputs {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  &__sep {
+    font-family: $font-score;
+    font-size: 0.65rem;
+  }
+
+  input {
+    @include neo-input;
+  }
+
+  &__players {
+    display: flex;
+    font-size: 0.65rem;
+    justify-content: space-around;
+    opacity: 0.7;
+  }
+}
