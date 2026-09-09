@@ -1,8 +1,8 @@
-# Table Tennis Run
+# PongRun
 
 Tu joues au ping-pong. Tu perds (ou tu gagnes). Et ensuite… tu cours.
 
-**Table Tennis Run**, c’est une petite appli arcade : tu rentres le score de ton match **après** la partie, et elle te calcule combien de **kilomètres de course à pied** tu « dois » pour la peine. Plus le match a été cruel, plus tu cours. Les matchs s’accumulent dans ton historique (tout reste sur ton navigateur).
+**PongRun**, c’est une petite appli arcade : tu rentres le score de ton match **après** la partie, et elle te calcule combien de **kilomètres de course à pied** tu « dois » pour la peine. Plus le match a été cruel, plus tu cours. Les matchs s’accumulent dans ton historique (tout reste sur ton navigateur).
 
 ---
 
@@ -11,7 +11,7 @@ Tu joues au ping-pong. Tu perds (ou tu gagnes). Et ensuite… tu cours.
 1. **Avant le match** : Ouvre **Options** si tu veux modifier les paramètres : ton nom, celui de l’adversaire, format BO3 ou BO5, sets à 11 ou 21, son arcade…
 2. **Sur la table** : Tu joues ton match pour de vrai (l’app ne suit pas le score en live).
 3. **Après le match** : Tu saisis les scores set par set. Chaque set est validé avant de passer au suivant.
-4. **Révélation** : L’app te balance ta distance en km, avec des badges selon le scénario (bulle, choke, remontada…).
+4. **Révélation** : L’app te balance ta distance en km, avec des badges selon le scénario (set blanc, choke, remontada…).
 5. **Historique** : Chaque match s’ajoute. Tu vois le cumul, le bilan victoires / défaites, ta moyenne et ta pire peine. Tu peux exporter ou importer ton historique en JSON depuis Options.
 
 ---
@@ -22,14 +22,14 @@ Tu joues au ping-pong. Tu perds (ou tu gagnes). Et ensuite… tu cours.
 
 - Tu **perds** le set → base kilométrique déjà plus lourde qu’une victoire.
 - Plus l’**écart** est large contre toi, plus ça grimpe.
-- **Bulle subie** : tu as marqué moins de la moitié du score cible (ex. &lt; 10 en 21, &lt; 5 en 11) → gros surcoût.
-- **Deuce éternel** : le set dépasse `2 ×` le score cible en points totaux (ex. &gt; 40 en 21) → chaque point au-delà ajoute encore un peu.
-- **Pression** : plus le set est tardif dans le match, plus l’effet d’une bulle est amplifié.
+- **Set blanc** = énorme surcoût (défaite en marquant moins de la moitié des points du set, ex. 21–9).
+- **Deuce** → chaque point au-delà ajoute encore un peu.
+- **Pression** : plus le set est tardif dans le match, plus l’effet d’un set blanc est amplifié.
 
 **Ça freine la peine**
 
 - Tu **gagnes** le set → petite base seulement (tu cours quand même un peu, mais beaucoup moins).
-- **Bulle infligée** : l’adversaire est sous la moitié du score cible → la peine de ce set baisse (et encore plus si le set est tardif).
+- **Set blanc infligé** : l’adversaire a marqué moins de la moitié des points du set → la peine de ce set baisse (et encore plus si le set est tardif).
 
 ### Étape 2 — Les 4 multiplicateurs de match
 
@@ -46,7 +46,7 @@ En résumé : victoire → ×0.5 ou ×0.7 ; défaite → ×1.3 ou ×1.5.
 
 ### Badges que tu peux voir
 
-- **Bulle infligée / subie** — sur un set
+- **Set blanc infligé / subi** — sur un set
 - **Prolongation deuce** — set qui s’éternise
 - **Remontada** (×0.5), **Domination** (×0.7), **Sweep subi** (×1.3), **Choke** (×1.5) — sur le résultat du match
 
