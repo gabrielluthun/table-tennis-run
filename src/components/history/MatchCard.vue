@@ -22,6 +22,10 @@ const formattedDate = computed(() =>
 const scoreLine = computed(() =>
   props.match.sets.map((s) => `${s.user}-${s.adversaire}`).join(' / '),
 )
+
+const historyBadges = computed(() => props.match.badges.filter((badge) => badge.type !== 'pity'))
+const visibleBadges = computed(() => historyBadges.value.slice(0, 3))
+const extraBadgeCount = computed(() => Math.max(0, historyBadges.value.length - 3))
 </script>
 
 <template>
@@ -42,13 +46,12 @@ const scoreLine = computed(() =>
     </div>
     <p class="match-card__score">{{ scoreLine }}</p>
     <p class="match-card__sequence">{{ match.sequence.join(' ') }}</p>
-    <div v-if="match.badges.length" class="match-card__badges">
-      <span v-for="badge in match.badges.slice(0, 3)" :key="badge.id" class="match-card__badge">
+    <p v-if="match.pityMode" class="match-card__pity">MODE PITIÉ</p>
+    <div v-if="historyBadges.length" class="match-card__badges">
+      <span v-for="badge in visibleBadges" :key="badge.id" class="match-card__badge">
         {{ badge.label }}
       </span>
-      <span v-if="match.badges.length > 3" class="match-card__badge">
-        +{{ match.badges.length - 3 }}
-      </span>
+      <span v-if="extraBadgeCount" class="match-card__badge">+{{ extraBadgeCount }}</span>
     </div>
   </article>
 </template>
@@ -101,6 +104,16 @@ const scoreLine = computed(() =>
     font-size: 0.65rem;
     margin-bottom: 0.5rem;
     opacity: 0.7;
+  }
+
+  &__pity {
+    background: $bg-fluo-pink;
+    border: 2px solid $bg-black;
+    color: $bg-white;
+    display: inline-block;
+    font-size: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.15rem 0.35rem;
   }
 
   &__badges {
