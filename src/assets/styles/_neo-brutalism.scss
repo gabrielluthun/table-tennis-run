@@ -28,17 +28,37 @@
   }
 }
 
+@mixin neo-overlay($z: 200) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $z;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100vw;
+  max-width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 1.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
 @mixin neo-input {
   border: $border-thick;
   font-family: $font-score;
-  font-size: 0.75rem;
-  padding: 0.5rem;
+  font-size: 0.85rem;
+  padding: 0.65rem 0.4rem;
   text-align: center;
-  width: 4rem;
+  width: 4.5rem;
   background: $bg-white;
 
   &:focus {
-    outline: 3px solid $bg-cyan;
+    outline: 3px solid $bg-black;
     outline-offset: 2px;
   }
 }

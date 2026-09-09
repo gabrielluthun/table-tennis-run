@@ -21,14 +21,14 @@ export function usePingPongTracker(storage: StorageService = matchStorage) {
     Math.round(matches.value.reduce((sum, m) => sum + m.distance, 0) * 10) / 10,
   )
 
-  function submitMatch(sets: SetInput[], rules: GameRules): boolean {
+  function submitMatch(sets: SetInput[], rules: GameRules, pityMode = false): boolean {
     const validation = validateMatch(sets, rules)
     if (!validation.valid) {
       formErrors.value = validation.errors
       return false
     }
 
-    const analysis = analyzeMatch(validation.sets, rules)
+    const analysis = analyzeMatch(validation.sets, rules, { pityMode })
     const match: MatchRecord = {
       id: generateMatchId(),
       date: new Date().toISOString(),

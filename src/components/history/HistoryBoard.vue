@@ -10,7 +10,6 @@ import './HistoryBoard.scss'
 const props = defineProps<{
   matches: MatchRecord[]
   totalKm: number
-  confirmMatchDelete?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -32,8 +31,7 @@ watch(
 const stats = computed(() => summarizeMatches(props.matches))
 
 function requestRemove(id: string): void {
-  if (props.confirmMatchDelete) pendingRemoveId.value = id
-  else emit('remove', id)
+  pendingRemoveId.value = id
 }
 
 function confirmRemove(): void {
@@ -69,7 +67,7 @@ function confirmClear(): void {
       role="group"
       aria-label="Confirmer la suppression"
     >
-      <p class="history-board__warn">IRRÉVERSIBLE — CE MATCH</p>
+      <p class="history-board__warn">La suppression de ce match est définitive.</p>
       <button type="button" class="history-board__clear" @click="confirmRemove">OUI, SUPPRIMER</button>
       <button type="button" class="history-board__cancel" @click="pendingRemoveId = null">ANNULER</button>
     </div>
@@ -84,7 +82,7 @@ function confirmClear(): void {
     </button>
 
     <div v-if="pendingClear" class="history-board__confirm" role="group" aria-label="Confirmer l'effacement">
-      <p class="history-board__warn">IRRÉVERSIBLE — TOUS LES MATCHS</p>
+      <p class="history-board__warn">La suppression de TOUS les matchs est définitive.</p>
       <button type="button" class="history-board__clear" @click="confirmClear">OUI, TOUT EFFACER</button>
       <button type="button" class="history-board__cancel" @click="pendingClear = false">ANNULER</button>
     </div>

@@ -1,12 +1,19 @@
 $border-thick: 4px solid #000;
 $shadow-hard: 6px 6px 0 0 #000;
 $shadow-press: 2px 2px 0 0 #000;
-$bg-mustard: #ffd600;
-$bg-fluo-pink: #ff006e;
-$bg-cyan: #00f5ff;
-$bg-acid-green: #39ff14;
+
+// Page calm zone — mustard kept loud but less laser-fluo
+$bg-mustard: #f5c518;
+$bg-mustard-soft: #ffe566;
+
+// Punch accents (composition anchors)
+$bg-fluo-pink: #ff1a6b;
+$bg-cyan: #5eeaf2;
+$bg-acid-green: #47f01a;
+
 $bg-white: #fff;
 $bg-black: #000;
 $color-error: #ff2d2d;
+
 $font-title: 'Archivo Black', sans-serif;
 $font-score: 'Press Start 2P', monospace;

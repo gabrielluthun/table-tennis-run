@@ -49,7 +49,7 @@ const statusLabel = computed(() => {
       <span v-if="status !== 'empty'" class="set-row__status">{{ statusLabel }}</span>
     </div>
     <div class="set-row__inputs">
-      <label>
+      <label class="set-row__field">
         <span class="sr-only">{{ playerName }} set {{ index }}</span>
         <input
           type="number"
@@ -64,9 +64,10 @@ const statusLabel = computed(() => {
             })
           "
         />
+        <span class="set-row__name" aria-hidden="true">{{ playerName }}</span>
       </label>
       <span class="set-row__sep">—</span>
-      <label>
+      <label class="set-row__field">
         <span class="sr-only">{{ opponentName }} set {{ index }}</span>
         <input
           type="number"
@@ -81,11 +82,8 @@ const statusLabel = computed(() => {
             })
           "
         />
+        <span class="set-row__name" aria-hidden="true">{{ opponentName }}</span>
       </label>
-    </div>
-    <div class="set-row__players">
-      <span>{{ playerName }}</span>
-      <span>{{ opponentName }}</span>
     </div>
   </div>
 </template>

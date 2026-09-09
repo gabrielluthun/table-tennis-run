@@ -3,18 +3,14 @@
 @use '@/assets/styles/neo-brutalism' as *;
 
 .reveal-screen {
+  @include neo-overlay(100);
   align-items: center;
   background: $bg-cyan;
   border: $border-thick;
-  display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  inset: 0;
   justify-content: safe center;
-  overflow-y: auto;
   padding: 2rem;
-  position: fixed;
-  z-index: 100;
 
   &--win {
     background: $bg-acid-green;

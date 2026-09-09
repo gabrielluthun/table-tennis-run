@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted, computed, nextTick } from 'vue'
 import type { MatchRecord } from '@/domain/types'
 import { playArcadeHit } from '@/services/arcadeSound'
+import { useBodyScrollLock } from '@/composables/useBodyScrollLock'
 import SpecialBadge from './SpecialBadge.vue'
 import './RevealScreen.scss'
 
@@ -26,6 +27,8 @@ let badgeTimer: ReturnType<typeof setInterval> | undefined
 
 const sequenceLabel = computed(() => props.result.sequence.join(' / '))
 const outcomeLabel = computed(() => (props.result.outcome === 'win' ? 'VICTOIRE' : 'DÉFAITE'))
+
+useBodyScrollLock()
 
 function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -73,33 +76,35 @@ function revealBadges(): void {
 </script>
 
 <template>
-  <div
-    class="reveal-screen"
-    :class="`reveal-screen--${result.outcome}`"
-    role="dialog"
-    aria-modal="true"
-    aria-live="assertive"
-    aria-label="Résultat kilométrique"
-  >
-    <p v-if="phase === 'calc'" class="reveal-screen__calc">CALCUL...</p>
+  <Teleport to="body">
+    <div
+      class="reveal-screen"
+      :class="`reveal-screen--${result.outcome}`"
+      role="dialog"
+      aria-modal="true"
+      aria-live="assertive"
+      aria-label="Résultat kilométrique"
+    >
+      <p v-if="phase === 'calc'" class="reveal-screen__calc">CALCUL...</p>
 
-    <template v-else>
-      <p class="reveal-screen__outcome">{{ outcomeLabel }}</p>
-      <p class="reveal-screen__distance">
-        {{ result.distance }}
-        <span class="reveal-screen__unit">KM</span>
-      </p>
-      <p class="reveal-screen__sequence">{{ sequenceLabel }}</p>
-      <div v-if="result.badges.length" class="reveal-screen__badges">
-        <SpecialBadge
-          v-for="badge in result.badges.slice(0, visibleBadges)"
-          :key="badge.id"
-          :badge="badge"
-        />
-      </div>
-      <button ref="closeRef" type="button" class="reveal-screen__close" @click="emit('close')">
-        NOUVEAU MATCH
-      </button>
-    </template>
-  </div>
+      <template v-else>
+        <p class="reveal-screen__outcome">{{ outcomeLabel }}</p>
+        <p class="reveal-screen__distance">
+          {{ result.distance }}
+          <span class="reveal-screen__unit">KM</span>
+        </p>
+        <p class="reveal-screen__sequence">{{ sequenceLabel }}</p>
+        <div v-if="result.badges.length" class="reveal-screen__badges">
+          <SpecialBadge
+            v-for="badge in result.badges.slice(0, visibleBadges)"
+            :key="badge.id"
+            :badge="badge"
+          />
+        </div>
+        <button ref="closeRef" type="button" class="reveal-screen__close" @click="emit('close')">
+          NOUVEAU MATCH
+        </button>
+      </template>
+    </div>
+  </Teleport>
 </template>

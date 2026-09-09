@@ -1,73 +1,95 @@
 # Table Tennis Run
 
-SPA type arcade : tu saisis le score d’un match de ping-pong **après** la partie, l’app calcule une **distance de course à pied** (km) à « payer », et cumule l’historique en LocalStorage.
+Tu joues au ping-pong. Tu perds (ou tu gagnes). Et ensuite… tu cours.
 
-Démo (après merge sur `main` + Pages activé) :
-**https://gabrielluthun.github.io/table-tennis-run/**
+**Table Tennis Run**, c’est une petite appli arcade : tu rentres le score de ton match **après** la partie, et elle te calcule combien de **kilomètres de course à pied** tu « dois » pour la peine. Plus le match a été cruel, plus tu cours. Les matchs s’accumulent dans ton historique (tout reste sur ton navigateur).
 
-## Stack
+---
 
-- **Vue 3** + TypeScript (Composition API, `<script setup>`)
-- **Vite 8** + SCSS (aucune lib UI)
-- **LocalStorage** (matchs + réglages)
-- Déploiement **GitHub Pages** via Actions
+## Comment ça se passe
 
-## Fonctionnalités
+1. **Avant le match** : Ouvre **Options** si tu veux modifier les paramètres : ton nom, celui de l’adversaire, format BO3 ou BO5, sets à 11 ou 21, son arcade…
+2. **Sur la table** : Tu joues ton match pour de vrai (l’app ne suit pas le score en live).
+3. **Après le match** : Tu saisis les scores set par set. Chaque set est validé avant de passer au suivant.
+4. **Révélation** : L’app te balance ta distance en km, avec des badges selon le scénario (bulle, choke, remontada…).
+5. **Historique** : Chaque match s’ajoute. Tu vois le cumul, le bilan victoires / défaites, ta moyenne et ta pire peine. Tu peux exporter ou importer ton historique en JSON depuis Options.
 
-- Saisie post-match (sets validés, feedback par set, Enter / Escape)
-- Formats **BO3 / BO5**, sets à **11** ou **21** (écart de 2)
-- Révélation animée victoire / défaite + badges spéciaux
-- Historique : total km, stats V/D, suppression unitaire ou wipe
-- Panneau **Options** : noms, format, son arcade, confirm delete, export / import JSON
-- Aide **Comment ça marche** (bas à droite)
-- Respect de `prefers-reduced-motion`
+---
 
-## Setup local
+### Étape 1 — Ce que chaque set ajoute
+
+**Ça fait monter la peine**
+
+- Tu **perds** le set → base kilométrique déjà plus lourde qu’une victoire.
+- Plus l’**écart** est large contre toi, plus ça grimpe.
+- **Bulle subie** : tu as marqué moins de la moitié du score cible (ex. &lt; 10 en 21, &lt; 5 en 11) → gros surcoût.
+- **Deuce éternel** : le set dépasse `2 ×` le score cible en points totaux (ex. &gt; 40 en 21) → chaque point au-delà ajoute encore un peu.
+- **Pression** : plus le set est tardif dans le match, plus l’effet d’une bulle est amplifié.
+
+**Ça freine la peine**
+
+- Tu **gagnes** le set → petite base seulement (tu cours quand même un peu, mais beaucoup moins).
+- **Bulle infligée** : l’adversaire est sous la moitié du score cible → la peine de ce set baisse (et encore plus si le set est tardif).
+
+### Étape 2 — Les 4 multiplicateurs de match
+
+À la fin, le total des sets est **toujours** multiplié par **un** de ces facteurs (jamais ×1 sur un match terminé) :
+
+| Multiplicateur | Facteur | Quand ça tombe |
+| --- | ---: | --- |
+| **Remontada** | ×0.5 | Tu **gagnes** le match alors que tu avais perdu le début (1er set en BO3, ou les 2 premiers en BO5) |
+| **Domination** | ×0.7 | Tu **gagnes** le match sans être passé par une remontada |
+| **Sweep subi** | ×1.3 | Tu **perds** le match sans avoir mené au début |
+| **Choke** | ×1.5 | Tu **perds** le match alors que tu avais gagné le début (1er set en BO3, ou les 2 premiers en BO5) |
+
+En résumé : victoire → ×0.5 ou ×0.7 ; défaite → ×1.3 ou ×1.5.
+
+### Badges que tu peux voir
+
+- **Bulle infligée / subie** — sur un set
+- **Prolongation deuce** — set qui s’éternise
+- **Remontada** (×0.5), **Domination** (×0.7), **Sweep subi** (×1.3), **Choke** (×1.5) — sur le résultat du match
+
+---
+
+## Lancer l’app chez toi
+
+Tu as besoin de Node.js, puis :
 
 ```bash
 npm install
 npm run dev
 ```
 
-Ouvre l’URL Vite affichée dans le terminal (souvent `http://localhost:5173/`).
+| Commande | À quoi ça sert |
+| --- | --- |
+| `npm run dev` | Version de travail, avec rechargement auto |
+| `npm run build` | Prépare la version « production » |
+| `npm run preview` | Teste cette version en local |
 
-## Scripts
-
-| Commande           | Rôle                          |
-| ------------------ | ----------------------------- |
-| `npm run dev`      | Serveur de développement      |
-| `npm run build`    | Build TypeScript + bundle     |
-| `npm run preview`  | Prévisualise le build `dist/` |
-
-Build GitHub Pages (base `/table-tennis-run/`) :
+Pour un build prêt pour GitHub Pages (chemin `/table-tennis-run/`) :
 
 ```bash
 GITHUB_PAGES=true npm run build
 ```
 
-## Usage
+---
 
-1. Configure éventuellement **Options** (noms, BO3/BO5, 11/21)
-2. Joue ton match hors app
-3. Saisis les scores set par set
-4. Valide → écran de révélation avec la distance km
-5. L’historique cumule tes km de peine
+## Un peu plus de détails
 
-## Règles métier (résumé)
+L’app est faite en **Vue 3** + TypeScript, **Vite**, **vue-router** et SCSS, sans lib UI. 
+Le déploiement public passe par **GitHub Pages** et le workflow [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
 
-- Format paramétrable : premier à **2** sets (BO3) ou **3** sets (BO5)
-- Set gagné à **11** ou **21** points min., écart de **2**
-- Distance par set : écart, « bulles », deuce, pression selon l’ordre des sets, multiplicateurs choke / remontada
-- Badges détectés sur la séquence (ex. balle de match, remontada)
+Routes : `/` (match), `/settings` (options), `/help` (comment ça marche). Sur Pages, le build copie `index.html` → `404.html` en fallback pour que les liens directs / refresh fonctionnent.
 
-La logique pure vit dans `src/domain/` (validation, calcul, badges, stats).
-
-## Architecture
+La logique du score, des km et des badges est dans `src/domain/` :
 
 ```
 src/
 ├── constants/       # Clés storage, constantes liées aux règles
 ├── domain/          # Logique pure (settings, validation, distance, badges)
+├── router/          # Routes /, /settings, /help
+├── views/           # MatchView (écran principal)
 ├── services/        # LocalStorage, export/import, son, IDs
 ├── composables/     # usePingPongTracker, useSettings
 └── components/
@@ -78,7 +100,8 @@ src/
     └── help/        # Comment ça marche
 ```
 
+---
 
 ## Licence
 
-Projet personnel / expérimental — usage libre pour usage perso.
+Projet perso / expérimental — libre pour un usage personnel.

@@ -39,6 +39,7 @@ export interface MatchAnalysis {
   outcome: MatchOutcome
   badges: Badge[]
   setDetails: SetDetail[]
+  pityMode: boolean
 }
 
 export interface ValidationResult {
@@ -64,6 +65,8 @@ export interface MatchRecord {
   multiplier: number
   outcome: MatchOutcome
   badges: Badge[]
+  /** True if pity scale was applied when this match was submitted */
+  pityMode?: boolean
 }
 
 export interface StorageData {
