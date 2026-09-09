@@ -10,7 +10,10 @@
 }
 
 body {
-  background: $bg-mustard;
+  background:
+    radial-gradient(ellipse 80% 50% at 15% -10%, $bg-mustard-soft 0%, transparent 55%),
+    radial-gradient(ellipse 70% 45% at 95% 110%, #e8a800 0%, transparent 50%),
+    $bg-mustard;
   color: $bg-black;
   font-family: $font-title;
   min-height: 100vh;
