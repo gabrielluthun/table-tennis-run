@@ -5,13 +5,21 @@ function computeTotalKm(matches: MatchRecord[]): number {
   return Math.round(matches.reduce((sum, m) => sum + m.distance, 0) * 10) / 10
 }
 
+function normalizeMatch(record: MatchRecord): MatchRecord {
+  return {
+    ...record,
+    pityMode: Boolean(record.pityMode),
+    badges: Array.isArray(record.badges) ? record.badges : [],
+  }
+}
+
 export const matchStorage = {
   load(): StorageData | null {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
       if (!raw) return null
       const data = JSON.parse(raw) as StorageData
-      const matches = data.matches ?? []
+      const matches = (data.matches ?? []).map(normalizeMatch)
       return { matches, totalKm: computeTotalKm(matches) }
     } catch {
       return null
