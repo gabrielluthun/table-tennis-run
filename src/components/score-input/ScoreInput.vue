@@ -54,8 +54,11 @@ defineExpose({ resetForm })
 
 <template>
   <form ref="formRef" class="score-input" novalidate @submit.prevent="handleSubmit">
-    <h2 class="score-input__title">MATCH TERMINÉ ?<br />BALANCE TES SCORES</h2>
-    <p class="score-input__meta">{{ rules.format }} · SET À {{ rules.minSetScore }}</p>
+    <header class="score-input__intro">
+      <h2 class="score-input__title">MATCH TERMINÉ ?</h2>
+      <p class="score-input__hook">BALANCE TES SCORES</p>
+      <p class="score-input__meta">{{ rules.format }} · SET À {{ rules.minSetScore }}</p>
+    </header>
 
     <div class="score-input__sets">
       <SetScoreRow
