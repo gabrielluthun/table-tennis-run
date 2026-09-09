@@ -5,8 +5,8 @@ export interface AppSettings {
   opponentName: string
   format: MatchFormat
   setTarget: SetTarget
-  confirmMatchDelete: boolean
   soundEnabled: boolean
+  pityMode: boolean
 }
 
 export interface GameRules {
@@ -25,8 +25,8 @@ export const DEFAULT_SETTINGS: AppSettings = {
   opponentName: 'ADV',
   format: 'BO5',
   setTarget: 21,
-  confirmMatchDelete: false,
   soundEnabled: false,
+  pityMode: false,
 }
 
 const NAME_MAX = 15
@@ -62,7 +62,7 @@ export function sanitizeSettings(raw: Partial<AppSettings> | null | undefined): 
     opponentName: clipName(raw?.opponentName, DEFAULT_SETTINGS.opponentName),
     format,
     setTarget,
-    confirmMatchDelete: Boolean(raw?.confirmMatchDelete),
     soundEnabled: Boolean(raw?.soundEnabled),
+    pityMode: Boolean(raw?.pityMode),
   }
 }
