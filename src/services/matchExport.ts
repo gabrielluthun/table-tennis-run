@@ -12,13 +12,23 @@ function isMatchRecord(value: unknown): value is MatchRecord {
   )
 }
 
+function normalizeMatch(record: MatchRecord): MatchRecord {
+  return {
+    ...record,
+    pityMode: Boolean(record.pityMode),
+    badges: Array.isArray(record.badges) ? record.badges : [],
+    multiplier: typeof record.multiplier === 'number' ? record.multiplier : 1,
+    outcome: record.outcome === 'win' || record.outcome === 'loss' ? record.outcome : 'loss',
+  }
+}
+
 export function parseImportedMatches(raw: string): MatchRecord[] {
   const data: unknown = JSON.parse(raw)
   const list = Array.isArray(data) ? data : (data as { matches?: unknown }).matches
   if (!Array.isArray(list) || !list.every(isMatchRecord)) {
     throw new Error('Fichier invalide : historique attendu.')
   }
-  return list
+  return list.map(normalizeMatch)
 }
 
 export function downloadMatches(matches: MatchRecord[]): void {
