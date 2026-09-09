@@ -9,6 +9,7 @@ import HistoryBoard from '@/components/history/HistoryBoard.vue'
 import OptionsPanel from '@/components/options/OptionsPanel.vue'
 import HowItWorks from '@/components/help/HowItWorks.vue'
 import { downloadMatches, parseImportedMatches } from '@/services/matchExport'
+import { DEFAULT_SETTINGS, displayName } from '@/domain/settings'
 import type { SetInput } from '@/domain/types'
 import '@/App.scss'
 
@@ -37,6 +38,12 @@ const showSettings = computed(() => route.name === 'settings')
 const showHelp = computed(() => route.name === 'help')
 const showHelpButton = computed(
   () => route.name === 'home' && currentStep.value !== 'reveal',
+)
+const playerLabel = computed(() =>
+  displayName(settings.value.playerName, DEFAULT_SETTINGS.playerName),
+)
+const opponentLabel = computed(() =>
+  displayName(settings.value.opponentName, DEFAULT_SETTINGS.opponentName),
 )
 
 function goHome(): void {
@@ -88,8 +95,8 @@ function handleReset(): void {
         ref="scoreInputRef"
         :errors="formErrors"
         :rules="rules"
-        :player-name="settings.playerName"
-        :opponent-name="settings.opponentName"
+        :player-name="playerLabel"
+        :opponent-name="opponentLabel"
         @submit="handleSubmit"
       />
       <RevealScreen
