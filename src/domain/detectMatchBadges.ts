@@ -22,17 +22,17 @@ export function detectMatchBadges(
 
     if (diff < 0 && set.adversaire < rules.bubbleThreshold) {
       badges.push({
-        id: `bulle-infligee-${setNum}`,
-        label: `BULLE INFLIGÉE (Set ${setNum})`,
-        type: 'bulle-infligee',
+        id: `set-blanc-inflige-${setNum}`,
+        label: `SET BLANC INFLIGÉ (Set ${setNum})`,
+        type: 'set-blanc-inflige',
       })
     }
 
     if (diff > 0 && set.user < rules.bubbleThreshold) {
       badges.push({
-        id: `bulle-subie-${setNum}`,
-        label: `BULLE SUBIE (Set ${setNum})`,
-        type: 'bulle-subie',
+        id: `set-blanc-subi-${setNum}`,
+        label: `SET BLANC SUBI (Set ${setNum})`,
+        type: 'set-blanc-subi',
       })
     }
 

@@ -53,7 +53,7 @@ function confirmClear(): void {
     <KmTotal :total-km="totalKm" />
     <MatchStats v-if="stats.played" :stats="stats" />
 
-    <p v-if="!matches.length" class="history-board__empty">AUCUN MATCH — PREMIER SET !</p>
+    <p v-if="!matches.length" class="history-board__empty">JOUE TON PREMIER MATCH !</p>
 
     <ul v-else class="history-board__list">
       <li v-for="match in matches" :key="match.id">

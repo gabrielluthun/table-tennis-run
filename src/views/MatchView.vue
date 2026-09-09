@@ -76,8 +76,8 @@ function handleReset(): void {
         OPTIONS
       </button>
       <div class="app__brand">
-        <h1 class="app__title">TABLE TENNIS RUN</h1>
-        <p class="app__subtitle">Ping-Pong → Kilomètres</p>
+        <h1 class="app__title">PONGRUN</h1>
+        <p class="app__subtitle">Ping-Pong = Kilomètres</p>
       </div>
     </header>
 

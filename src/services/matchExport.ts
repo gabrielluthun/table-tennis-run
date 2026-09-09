@@ -37,7 +37,7 @@ export function downloadMatches(matches: MatchRecord[]): void {
   const stamp = new Date().toISOString().slice(0, 10)
   const link = document.createElement('a')
   link.href = url
-  link.download = `table-tennis-run-${stamp}.json`
+  link.download = `pong-run-${stamp}.json`
   link.click()
   URL.revokeObjectURL(url)
 }
