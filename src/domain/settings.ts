@@ -31,9 +31,15 @@ export const DEFAULT_SETTINGS: AppSettings = {
 
 const NAME_MAX = 15
 
-function clipName(value: unknown, fallback: string): string {
-  if (typeof value !== 'string') return fallback
-  const clipped = value.trim().slice(0, NAME_MAX)
+/** Keep raw typing (empty allowed); length-capped only. */
+function clipName(value: unknown): string {
+  if (typeof value !== 'string') return ''
+  return value.slice(0, NAME_MAX)
+}
+
+/** Fallback for empty names when shown in the match UI. */
+export function displayName(name: string, fallback: string): string {
+  const clipped = name.trim().slice(0, NAME_MAX)
   return clipped || fallback
 }
 
@@ -58,8 +64,8 @@ export function sanitizeSettings(raw: Partial<AppSettings> | null | undefined): 
   const setTarget: SetTarget = raw?.setTarget === 11 ? 11 : 21
 
   return {
-    playerName: clipName(raw?.playerName, DEFAULT_SETTINGS.playerName),
-    opponentName: clipName(raw?.opponentName, DEFAULT_SETTINGS.opponentName),
+    playerName: clipName(raw?.playerName),
+    opponentName: clipName(raw?.opponentName),
     format,
     setTarget,
     soundEnabled: Boolean(raw?.soundEnabled),
