@@ -1,6 +1,6 @@
 {
-  "name": "Table Tennis Run",
-  "short_name": "TT Run",
+  "name": "PongRun",
+  "short_name": "PongRun",
   "description": "Tracker tes matchs de ping-pong et transformer le score en kilomètres à courir.",
   "start_url": "./",
   "display": "standalone",
